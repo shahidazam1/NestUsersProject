@@ -12,7 +12,8 @@ interface dtoCreate {
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(data: dtoCreate) {
+  async create(data) {
+    console.log(data);
     const value = await this.prismaService.user.create({
       data,
     });
@@ -23,6 +24,7 @@ export class UserService {
     return this.prismaService.user.findMany({
       include: {
         posts: true,
+        address: true,
       },
     });
   }
@@ -32,6 +34,7 @@ export class UserService {
       where: { id },
       include: {
         posts: true,
+        address: true,
       },
     });
   }
@@ -45,5 +48,12 @@ export class UserService {
 
   remove(id: number) {
     return this.prismaService.user.delete({ where: { id } });
+  }
+
+  createAddress({ id, createAddressDto }) {
+    console.log(id, createAddressDto);
+    return this.prismaService.address.create({
+      data: { ...createAddressDto, userId: id },
+    });
   }
 }

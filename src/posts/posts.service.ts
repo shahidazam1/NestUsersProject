@@ -4,21 +4,18 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
 interface dtoPost {
-  title?: String;
-  content?: String;
-  published?: Boolean;
+  title?: string;
+  content?: string;
+  published?: boolean;
   authorId: string;
 }
 
 @Injectable()
 export class PostsService {
   constructor(private prismaService: PrismaService) {}
-  async create(data: dtoPost) {
+  async create(data) {
     return await this.prismaService.post.create({
-      data: {
-        title: 'post 1',
-        authorId: 1,
-      },
+      data,
     });
   }
 
@@ -27,14 +24,17 @@ export class PostsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} post`;
+    return this.prismaService.post.findUnique({ where: { id } });
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  update(id: number, updatePostDto) {
+    return this.prismaService.post.update({
+      data: updatePostDto,
+      where: { id },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} post`;
+    return this.prismaService.post.delete({ where: { id } });
   }
 }

@@ -6,13 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateAddressDto } from 'src/address/dto/create-address.dto';
 interface dtoController {
   name: string;
   email: string;
+  password: string;
 }
 
 @Controller('user')
@@ -20,7 +23,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: dtoController) {
+  create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
@@ -42,5 +45,13 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
+  }
+
+  @Post(':id/address')
+  createAddress(
+    @Body() createAddressDto: CreateAddressDto,
+    @Param('id', ParseIntPipe) id: string,
+  ) {
+    return this.userService.createAddress({ id, createAddressDto });
   }
 }

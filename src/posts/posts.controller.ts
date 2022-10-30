@@ -12,9 +12,9 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
 interface dtoposts {
-  title: String;
-  content: String;
-  published: Boolean;
+  title?: String;
+  content?: String;
+  published?: Boolean;
   authorId: string;
 }
 
